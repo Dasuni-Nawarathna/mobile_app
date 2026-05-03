@@ -7,8 +7,9 @@ Production Readiness — final QA pass and polish before go-live
 
 ---
 
-## In Progress (2026-05-02)
+## In Progress (2026-05-03)
 
+- [x] Configured authentication API routes (`/api/auth/register`, `/api/auth/login`, and `/api/auth/me`) in `yatara-api/src/routes/auth.ts` to connect to MongoDB and utilize JWT and bcrypt for secure login/registration.
 - [x] Scaffold Yatara Ceylon Expo mobile app: JWT auth (`expo-secure-store`), branded UI, API client, Home / Journeys / Bookings / Settings tabs wired to standalone `backend/` REST API (health, packages list/detail, bookings list/create).
 
 ## In Progress (2026-04-01)
@@ -307,6 +308,26 @@ Production Readiness — final QA pass and polish before go-live
 ---
 
 ## Last Session
+
+**Date**: 2026-05-03
+**What was done**:
+- Configured authentication API routes (`/api/auth/register`, `/api/auth/login`, and `/api/auth/me`) in `yatara-api/src/routes/auth.ts` to connect to MongoDB and utilize JWT and bcrypt for secure login/registration.
+- Cleaned up unused imports in `auth.ts`.
+- Protected the `/me` route with `protect` middleware to ensure only authenticated users can retrieve their profiles.
+
+**What to do next**:
+- Continue configuring other API routes in `yatara-api/src/routes/` to replace mock data with real database operations (e.g., packages, bookings, finance).
+- Ensure the mobile frontend can authenticate against these new routes properly.
+
+**Current state**:
+- Backend `yatara-api` auth routes implemented and ready for integration.
+- `mobile` app expects `/api/auth/login` and `/api/auth/register`.
+
+**Files changed**:
+- `yatara-api/src/routes/auth.ts`
+- `.agent/TODO.md`
+
+---
 
 **Date**: 2026-05-02
 **What was done**:

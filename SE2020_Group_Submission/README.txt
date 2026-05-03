@@ -3,6 +3,23 @@ YATARA CEYLON - FULL STACK MOBILE SYSTEM
 Academic Project Submission - README
 =========================================================
 
+01). GitHub Repository Link
+GitHub Repository: https://github.com/Dasuni-Nawarathna/YataraCeylon_app.git
+
+02). Team Details
+Group Number: XX
+Member 1: ITxxxx – Name – Module
+Member 2: ITxxxx – Name – Module
+Member 3: ITxxxx – Name – Module
+Member 4: ITxxxx – Name – Module
+Member 5: ITxxxx – Name – Module
+Member 6: ITxxxx – Name – Module
+
+03). Deployment Details
+Backend URL: https://your-api-link
+
+=========================================================
+
 1. PROJECT OVERVIEW
 Yatara Ceylon is a luxury travel and fleet management mobile application designed to interface with an existing MongoDB database. It provides administrators and staff with on-the-go CRUD capabilities across 6 core business modules, completely digitalizing operations.
 
@@ -23,7 +40,7 @@ Yatara Ceylon is a luxury travel and fleet management mobile application designe
 4. WEB TO MOBILE CONVERSION EXPLANATION (Crucial Context)
 This project is an evolution of the existing Yatara Ceylon Next.js web application architecture, adapted strictly to a mobile-first paradigm. 
 - The MongoDB schemas were preserved entirely and imported into a new, standalone Express REST API to satisfy the academic "Node.js API" requirement while retaining database continuity.
-- The web UI (TailwindCSS) was recreated natively utilizing React Native `StyleSheet`, `ScrollViews`, and `KeyboardAvoidingView`.
+- The web UI (TailwindCSS) was recreated natively utilizing React Native StyleSheet, ScrollViews, and KeyboardAvoidingView.
 - A centralized Axios client handles network requests, replacing standard Next.js fetch queries.
 
 5. SETUP INSTRUCTIONS

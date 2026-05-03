@@ -2,7 +2,7 @@ import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/User';
-import { upload } from '../middleware/upload';
+import { protect, AuthRequest } from '../middleware/auth';
 
 const router = express.Router();
 
@@ -30,7 +30,7 @@ router.post('/register', async (req: any, res: any) => {
 
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(password, salt);
-    
+
     const user = await User.create({
       name,
       email,
@@ -70,7 +70,7 @@ router.post('/login', async (req: any, res: any) => {
     }
 
     const user = await User.findOne({ email, isDeleted: { $ne: true } }).select('+passwordHash');
-    
+
     if (user && (await bcrypt.compare(password, user.passwordHash))) {
       // Update last login
       user.lastLogin = new Date();
@@ -87,6 +87,30 @@ router.post('/login', async (req: any, res: any) => {
     } else {
       res.status(401).json({ error: 'Invalid email or password' });
     }
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
+});
+
+// @route   GET /api/auth/me
+// @desc    Get current user profile
+// @access  Private
+router.get('/me', protect, async (req: AuthRequest, res: any) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      avatar: user.avatar,
+      phone: user.phone,
+      status: user.status
+    });
   } catch (error) {
     res.status(500).json({ error: (error as Error).message });
   }

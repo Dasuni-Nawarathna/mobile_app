@@ -1,1 +1,0 @@
-self.__INTERCEPTION_ROUTE_REWRITE_MANIFEST="[{\"source\":\"/search\",\"destination\":\"/(.)search\",\"has\":[{\"type\":\"header\",\"key\":\"next-url\",\"value\":\"(?:\\\\/(.*))?[\\\\/#\\\\?]?\"}],\"regex\":\"^\\\\/search(?:\\\\/)?$\"}]"
