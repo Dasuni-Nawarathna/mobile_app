@@ -8,8 +8,7 @@
     "strict": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "rootDir": "./src",
-    "ignoreDeprecations": "6.0"
+    "rootDir": "./src"
   },
   "include": ["src/**/*"],
   "ts-node": {
