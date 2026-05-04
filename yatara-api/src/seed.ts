@@ -1,28 +1,16 @@
-/**
- * Yatara Ceylon — Demo Account Seed Script
- * ─────────────────────────────────────────
- * Run: npx ts-node src/seed.ts
- *
- * Seeds demo accounts for all roles so the full system can be tested end-to-end.
- * Safe to re-run: uses upsert by email so no duplicate accounts are created.
- */
-
-import dotenv from 'dotenv';
-import path from 'path';
 import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
+import dotenv from 'dotenv';
+import User from './models/User';
+import Package from './models/Package';
+import Vehicle from './models/Vehicle';
+import Booking from './models/Booking';
 
-// Load env vars from project root (both .env.local and .env)
-dotenv.config({ path: path.resolve(__dirname, '../../.env.local') });
 dotenv.config();
 
-import connectDB from './config/db';
-import User from './models/User';
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/yatara-ceylon';
 
-const DEMO_PASSWORD = 'login123';
-
-const demoAccounts = [
-  // ── Admin ─────────────────────────────────────────
+const demoUsers = [
+  // ── Admins & Staff ────────────────────────────────
   {
     name: 'Yatara Admin',
     email: 'admin@yatara.com',
@@ -30,7 +18,6 @@ const demoAccounts = [
     status: 'ACTIVE',
     phone: '+94701234567',
   },
-  // ── Staff ─────────────────────────────────────────
   {
     name: 'Saman Staff',
     email: 'staff@yatara.com',
@@ -42,27 +29,20 @@ const demoAccounts = [
   {
     name: 'Emma Tourist',
     email: 'tourist@yatara.com',
-    role: 'USER',
+    role: 'USER', // Using USER for production compatibility
     status: 'ACTIVE',
     phone: '+44791234567',
   },
-  {
-    name: 'James Walker',
-    email: 'james@example.com',
-    role: 'TOURIST',
-    status: 'ACTIVE',
-    phone: '+1234567890',
-  },
   // ── Drivers ───────────────────────────────────────
   {
-    name: 'Kumara Driver (Verified)',
-    email: 'driver.verified@yatara.com',
+    name: 'Kumara Driver',
+    email: 'driver@yatara.com',
     role: 'DRIVER',
     status: 'ACTIVE',
     phone: '+94703456789',
   },
   {
-    name: 'Nimal Driver (Pending)',
+    name: 'Nimal Driver',
     email: 'driver.pending@yatara.com',
     role: 'DRIVER',
     status: 'PENDING_APPROVAL',
@@ -70,14 +50,14 @@ const demoAccounts = [
   },
   // ── Hotel Managers ────────────────────────────────
   {
-    name: 'Priya Hotel Manager (Verified)',
-    email: 'hotel.verified@yatara.com',
+    name: 'Priya Hotel',
+    email: 'hotel@yatara.com',
     role: 'HOTEL_MANAGER',
     status: 'ACTIVE',
     phone: '+94705678901',
   },
   {
-    name: 'Roshan Hotel Manager (Pending)',
+    name: 'Roshan Hotel',
     email: 'hotel.pending@yatara.com',
     role: 'HOTEL_MANAGER',
     status: 'PENDING_APPROVAL',
@@ -85,55 +65,59 @@ const demoAccounts = [
   },
 ];
 
+const demoPackages = [
+  {
+    title: 'Highland Escape: Tea Trails of Nuwara Eliya',
+    description: 'Experience the colonial charm and misty mountains of the central highlands.',
+    priceMin: 145000,
+    durationDays: 4,
+    heroImage: 'https://images.unsplash.com/photo-1546708973-b339540b5162?auto=format&fit=crop&q=80',
+    status: 'published',
+    slug: 'highland-escape-nuwara-eliya',
+  },
+  {
+    title: 'Coastal Luxury: Southern Beach Retreat',
+    description: 'Relax in the most exclusive villas along the pristine southern coast.',
+    priceMin: 220000,
+    durationDays: 7,
+    heroImage: 'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?auto=format&fit=crop&q=80',
+    status: 'published',
+    slug: 'coastal-luxury-southern-beach',
+  }
+];
+
 async function seed() {
   try {
-    await connectDB();
-    console.log('\nYatara Ceylon — Cleaning existing demo accounts...\n');
-    const demoEmails = demoAccounts.map(a => a.email.toLowerCase());
-    await User.deleteMany({ email: { $in: demoEmails } });
-    
-    console.log('Seeding demo accounts...\n');
+    await mongoose.connect(MONGO_URI);
+    console.log('Connected to MongoDB for seeding...');
 
-    const salt = await bcrypt.genSalt(10);
-    const passwordHash = await bcrypt.hash(DEMO_PASSWORD, salt);
-
-    for (const account of demoAccounts) {
-      const result = await User.findOneAndUpdate(
-        { email: account.email },
-        {
-          $set: {
-            name: account.name,
-            email: account.email,
-            passwordHash,
-            role: account.role.trim(),
-            status: account.status,
-            phone: account.phone,
-            emailVerified: true,
-            isDeleted: false,
-            failedLoginAttempts: 0,
-            lockedUntil: undefined,
-          },
-        },
-        { upsert: true, new: true, setDefaultsOnInsert: true }
+    // Users
+    for (const u of demoUsers) {
+      await User.findOneAndUpdate(
+        { email: u.email },
+        { ...u, password: 'login123' },
+        { upsert: true, new: true }
       );
-      console.log(`  [OK] ${account.role.padEnd(15)} | ${account.status.padEnd(20)} | ${account.email}`);
+      console.log(`  [OK] ${u.role.padEnd(14)} | ${u.status.padEnd(20)} | ${u.email}`);
     }
 
-    console.log(`\nAll accounts use password: ${DEMO_PASSWORD}`);
+    // Packages
+    for (const p of demoPackages) {
+      await Package.findOneAndUpdate({ title: p.title }, p, { upsert: true });
+    }
+
+    console.log('\nAll accounts use password: login123');
     console.log('\nQuick Reference:');
     console.log('  Admin         → admin@yatara.com');
     console.log('  Staff         → staff@yatara.com');
     console.log('  Tourist       → tourist@yatara.com');
-    console.log('  Driver (v)   → driver.verified@yatara.com');
-    console.log('  Driver (p)   → driver.pending@yatara.com');
-    console.log('  Hotel (v)    → hotel.verified@yatara.com');
-    console.log('  Hotel (p)    → hotel.pending@yatara.com');
-    console.log('\nSeed complete!\n');
-
-    await mongoose.disconnect();
+    console.log('  Driver (v)    → driver@yatara.com');
+    console.log('  Hotel (v)     → hotel@yatara.com');
+    
+    console.log('\nSeed complete!');
     process.exit(0);
   } catch (err) {
-    console.error('Seed failed:', err);
+    console.error('Seed error:', err);
     process.exit(1);
   }
 }

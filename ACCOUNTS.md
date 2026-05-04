@@ -28,7 +28,7 @@ Used for managing fleet vehicles and viewing assigned tourist transport requests
 
 | Name | Email | Role | Status |
 | :--- | :--- | :--- | :--- |
-| Kumara Driver | `driver.verified@yatara.com` | `DRIVER` | **Active** |
+| Kumara Driver | `driver@yatara.com` | `DRIVER` | **Active** |
 | Nimal Driver | `driver.pending@yatara.com` | `DRIVER` | **Pending Approval** |
 
 ---
@@ -38,8 +38,8 @@ Used for managing property services and packages.
 
 | Name | Email | Role | Status |
 | :--- | :--- | :--- | :--- |
-| Priya Manager | `hotel.verified@yatara.com` | `HOTEL_MANAGER` | **Active** |
-| Roshan Manager| `hotel.pending@yatara.com` | `HOTEL_MANAGER` | **Pending Approval** |
+| Priya Hotel | `hotel@yatara.com` | `HOTEL_MANAGER` | **Active** |
+| Roshan Hotel| `hotel.pending@yatara.com` | `HOTEL_MANAGER` | **Pending Approval** |
 
 ---
 
