@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator, BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
 import { ActivityIndicator, View, Text, Image } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import { AuthContext, isAdminOrStaff, isServiceProvider } from '../context/AuthContext';
 
@@ -212,16 +213,47 @@ const AppNavigator = () => {
 
   if (isLoading || !bootChecked) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#060D0B' }}>
-        <Image 
-          source={require('../../assets/icon.png')} 
-          style={{ width: 140, height: 140, marginBottom: 20 }}
-          resizeMode="contain"
-        />
-        <ActivityIndicator size="large" color="#D4AF37" />
-        <Text style={{ color: 'rgba(255,255,255,0.3)', marginTop: 14, fontSize: 12, letterSpacing: 2 }}>
-          YATARA CEYLON
-        </Text>
+      <View style={{ flex: 1 }}>
+        <LinearGradient
+          colors={['#0E1E16', '#060D0B', '#030706']}
+          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+        >
+          <View style={{ 
+            width: 200, height: 200, 
+            borderRadius: 100, 
+            backgroundColor: 'rgba(212,175,55,0.03)',
+            justifyContent: 'center', alignItems: 'center',
+            borderWidth: 1, borderColor: 'rgba(212,175,55,0.05)'
+          }}>
+            <Image 
+              source={require('../../assets/icon.png')} 
+              style={{ width: 140, height: 140 }}
+              resizeMode="contain"
+            />
+          </View>
+          
+          <View style={{ marginTop: 40, alignItems: 'center' }}>
+            <ActivityIndicator size="small" color="#D4AF37" />
+            <Text style={{ 
+              color: '#D4AF37', 
+              marginTop: 24, 
+              fontSize: 10, 
+              fontWeight: 'bold',
+              letterSpacing: 4,
+              opacity: 0.8
+            }}>
+              YATARA CEYLON
+            </Text>
+            <Text style={{ 
+              color: 'rgba(255,255,255,0.3)', 
+              marginTop: 8, 
+              fontSize: 9, 
+              letterSpacing: 1
+            }}>
+              LUXURY JOURNEYS
+            </Text>
+          </View>
+        </LinearGradient>
       </View>
     );
   }
