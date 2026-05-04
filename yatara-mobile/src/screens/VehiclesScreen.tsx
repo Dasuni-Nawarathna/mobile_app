@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { 
   View, Text, FlatList, StyleSheet, ActivityIndicator, 
-  TouchableOpacity, Modal, TextInput, Alert, RefreshControl, ListRenderItem
+  TouchableOpacity, Modal, TextInput, Alert, RefreshControl, ListRenderItem, Image
 } from 'react-native';
 import client from '../api/client';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -165,10 +165,11 @@ const VehiclesScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <View>
-          <Text style={styles.headerTitle}>My Fleet</Text>
-          <Text style={styles.headerSub}>Manage your vehicles & availability</Text>
-        </View>
+        <Image 
+          source={require('../../assets/icon.png')} 
+          style={{ width: 44, height: 44 }}
+          resizeMode="contain"
+        />
         <TouchableOpacity style={styles.addBtn} onPress={openCreateModal}>
           <MaterialCommunityIcons name="plus" size={20} color="#060D0B" />
           <Text style={styles.addBtnText}>Add</Text>

@@ -103,15 +103,11 @@ const PackagesScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <View>
-          <Image 
-            source={require('../../assets/icon.png')} 
-            style={{ width: 40, height: 40, marginBottom: 8 }}
-            resizeMode="contain"
-          />
-          <Text style={styles.headerTitle}>Explore Ceylon</Text>
-          <Text style={styles.headerSub}>Bespoke journeys for the modern traveler</Text>
-        </View>
+        <Image 
+          source={require('../../assets/icon.png')} 
+          style={{ width: 44, height: 44 }}
+          resizeMode="contain"
+        />
         <TouchableOpacity style={styles.filterBtn}>
           <MaterialCommunityIcons name="tune-variant" size={20} color="#D4AF37" />
         </TouchableOpacity>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { 
   View, Text, FlatList, StyleSheet, ActivityIndicator, 
-  TouchableOpacity, Modal, TextInput, Alert, RefreshControl, ListRenderItem
+  TouchableOpacity, Modal, TextInput, Alert, RefreshControl, ListRenderItem, Image
 } from 'react-native';
 import client from '../api/client';
 import { User } from '../context/AuthContext';
@@ -137,10 +137,11 @@ const UsersScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <View>
-          <Text style={styles.headerTitle}>User Accounts</Text>
-          <Text style={styles.headerSub}>Manage the Yatara community</Text>
-        </View>
+        <Image 
+          source={require('../../assets/icon.png')} 
+          style={{ width: 44, height: 44 }}
+          resizeMode="contain"
+        />
       </View>
 
       <View style={styles.searchWrapper}>

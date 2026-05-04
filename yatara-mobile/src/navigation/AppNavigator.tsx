@@ -112,9 +112,13 @@ interface ProviderTabsProps {
   role: string;
 }
 
-// ── Provider (Driver / Hotel) Tab Navigator ─────────────────────
 const ProviderTabs: React.FC<ProviderTabsProps> = ({ role }) => (
   <Tab.Navigator screenOptions={TAB_STYLE}>
+    <Tab.Screen
+      name="Home"
+      component={TouristStorefront}
+      options={{ title: 'Yatara Ceylon', tabBarIcon: tabIcon('Home') }}
+    />
     <Tab.Screen
       name="Dashboard"
       component={ProviderDashboard}
@@ -150,6 +154,11 @@ const ProviderTabs: React.FC<ProviderTabsProps> = ({ role }) => (
 // ── Admin / Staff Tab Navigator ─────────────────────────────────
 const AdminTabs = () => (
   <Tab.Navigator screenOptions={TAB_STYLE}>
+    <Tab.Screen
+      name="Home"
+      component={TouristStorefront}
+      options={{ title: 'Yatara Ceylon', tabBarIcon: tabIcon('Home') }}
+    />
     <Tab.Screen
       name="Control Panel"
       component={AdminControlPanel}

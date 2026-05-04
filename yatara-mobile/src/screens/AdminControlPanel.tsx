@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, TouchableOpacity, FlatList,
-  ActivityIndicator, Alert, Modal, TextInput, RefreshControl, ListRenderItem
+  ActivityIndicator, Alert, Modal, TextInput, RefreshControl, ListRenderItem, Image
 } from 'react-native';
 import { AuthContext, User } from '../context/AuthContext';
 import client from '../api/client';
@@ -231,11 +231,11 @@ const AdminControlPanel: React.FC<Props> = ({ navigation }) => {
       {/* ── Header ─────────────────────────────── */}
       <View style={styles.header}>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-          <MaterialCommunityIcons name="shield-key" size={26} color="#D4AF37" />
-          <View>
-            <Text style={styles.headerTitle}>Admin Panel</Text>
-            <Text style={styles.headerSub}>Yatara Ceylon Control Centre</Text>
-          </View>
+          <Image 
+            source={require('../../assets/icon.png')} 
+            style={{ width: 44, height: 44 }}
+            resizeMode="contain"
+          />
         </View>
         <TouchableOpacity style={styles.logoutBtn} onPress={logout}>
           <Text style={styles.logoutText}>Sign Out</Text>

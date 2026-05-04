@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { 
   View, Text, FlatList, StyleSheet, ActivityIndicator, 
-  TouchableOpacity, Alert, RefreshControl, ListRenderItem
+  TouchableOpacity, Alert, RefreshControl, ListRenderItem, Image
 } from 'react-native';
 import client from '../api/client';
 import { AuthContext } from '../context/AuthContext';
@@ -100,10 +100,13 @@ const BookingsScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <LinearGradient colors={['#0E1E16', '#060D0B']} style={styles.header}>
-        <Text style={styles.headerTitle}>My Journeys</Text>
-        <Text style={styles.headerSub}>Tracking your Ceylon experiences</Text>
-      </LinearGradient>
+      <View style={styles.header}>
+        <Image 
+          source={require('../../assets/icon.png')} 
+          style={{ width: 44, height: 44 }}
+          resizeMode="contain"
+        />
+      </View>
       
       {loading && !refreshing ? (
         <View style={styles.loader}>

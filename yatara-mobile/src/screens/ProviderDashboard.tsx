@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, TouchableOpacity,
-  ActivityIndicator, RefreshControl,
+  ActivityIndicator, RefreshControl, Image
 } from 'react-native';
 import { AuthContext } from '../context/AuthContext';
 import client from '../api/client';
@@ -157,13 +157,11 @@ const ProviderDashboard: React.FC<Props> = ({ navigation }) => {
       {/* Header */}
       <View style={[styles.header, { borderBottomColor: config.color + '44' }]}>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
-          <View style={styles.headerIconContainer}>
-            <MaterialCommunityIcons name={config.icon} size={32} color="#D4AF37" />
-          </View>
-          <View>
-            <Text style={styles.headerTitle}>{config.title}</Text>
-            <Text style={styles.headerSub}>Welcome, {user?.name?.split(' ')[0]}</Text>
-          </View>
+          <Image 
+            source={require('../../assets/icon.png')} 
+            style={{ width: 44, height: 44 }}
+            resizeMode="contain"
+          />
         </View>
         <TouchableOpacity style={styles.logoutBtn} onPress={logout}>
           <Text style={styles.logoutText}>Sign Out</Text>

@@ -127,6 +127,29 @@ const TouristStorefront: React.FC<Props> = ({ navigation }) => {
     </TouchableOpacity>
   );
 
+  const GuestHeroActions = () => (
+    <View style={styles.guestActions}>
+      <TouchableOpacity 
+        style={styles.guestLoginBtn}
+        onPress={() => navigation.navigate('Login', { mode: 'login' })}
+      >
+        <Text style={styles.guestLoginText}>SIGN IN</Text>
+      </TouchableOpacity>
+      <TouchableOpacity 
+        style={styles.guestSignupBtn}
+        onPress={() => navigation.navigate('Login', { mode: 'signup' })}
+      >
+        <Text style={styles.guestSignupText}>JOIN US</Text>
+      </TouchableOpacity>
+      <TouchableOpacity 
+        style={[styles.guestSignupBtn, { backgroundColor: 'rgba(212,175,55,0.1)', borderColor: '#D4AF37' }]}
+        onPress={() => navigation.navigate('Explore')}
+      >
+        <Text style={[styles.guestSignupText, { color: '#D4AF37' }]}>EXPLORE</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
   return (
     <View style={styles.container}>
       <ScrollView
@@ -160,7 +183,7 @@ const TouristStorefront: React.FC<Props> = ({ navigation }) => {
                 <View style={styles.notifDot} />
               </TouchableOpacity>
             </View>
-
+ 
             <View style={styles.heroMain}>
               <Text style={styles.heroTag}>CURATED LUXURY</Text>
               <Text style={styles.heroTitle}>Discover The{'\n'}True Essence{'\n'}Of Ceylon</Text>
@@ -169,23 +192,8 @@ const TouristStorefront: React.FC<Props> = ({ navigation }) => {
                 <MaterialCommunityIcons name="magnify" size={22} color="rgba(255,255,255,0.4)" />
                 <Text style={styles.searchText}>Where to next?</Text>
               </TouchableOpacity>
-
-              {!user && (
-                <View style={styles.guestActions}>
-                  <TouchableOpacity 
-                    style={styles.guestLoginBtn}
-                    onPress={() => navigation.navigate('Login', { mode: 'login' })}
-                  >
-                    <Text style={styles.guestLoginText}>SIGN IN</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity 
-                    style={styles.guestSignupBtn}
-                    onPress={() => navigation.navigate('Login', { mode: 'signup' })}
-                  >
-                    <Text style={styles.guestSignupText}>JOIN US</Text>
-                  </TouchableOpacity>
-                </View>
-              )}
+ 
+              {!user && <GuestHeroActions />}
             </View>
           </LinearGradient>
         </ImageBackground>
