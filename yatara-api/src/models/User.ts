@@ -39,6 +39,7 @@ const UserSchema = new Schema<IUser>(
             type: String,
             enum: Object.values(UserRoles),
             default: UserRoles.STAFF,
+            trim: true,
             index: true,
         },
         status: {
@@ -60,6 +61,13 @@ const UserSchema = new Schema<IUser>(
     },
     { timestamps: true }
 );
+
+UserSchema.pre('save', function (next) {
+    if (this.role) {
+        this.role = this.role.trim().toUpperCase() as any;
+    }
+    next();
+});
 
 UserSchema.index({ email: 1 }, { unique: true });
 

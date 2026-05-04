@@ -2,9 +2,23 @@ export const UserRoles = {
     ADMIN: 'ADMIN',
     STAFF: 'STAFF',
     USER: 'USER',
+    // Yatara Ceylon domain-specific roles
+    TOURIST: 'TOURIST',
+    DRIVER: 'DRIVER',
+    HOTEL_MANAGER: 'HOTEL_MANAGER',
+    // Legacy aliases (kept for compatibility)
     VEHICLE_OWNER: 'VEHICLE_OWNER',
     HOTEL_OWNER: 'HOTEL_OWNER',
 } as const;
+
+// Roles allowed to self-register via the app
+export const SelfRegisterRoles = ['TOURIST', 'DRIVER', 'HOTEL_MANAGER'] as const;
+
+// Roles that get sent to the operations dashboard after login
+export const DashboardRoles = ['ADMIN', 'STAFF', 'DRIVER', 'HOTEL_MANAGER', 'VEHICLE_OWNER', 'HOTEL_OWNER'] as const;
+
+// Roles that can only see the tourist/booking experience
+export const TouristRoles = ['TOURIST', 'USER'] as const;
 
 export const UserStatus = {
     ACTIVE: 'ACTIVE',

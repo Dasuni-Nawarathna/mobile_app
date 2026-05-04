@@ -7,6 +7,32 @@ Production Readiness — final QA pass and polish before go-live
 
 ---
 
+## In Progress (2026-05-04)
+
+- [x] Guest Mode Implementation — Public "Home", "Explore" and "Account" tabs for non-logged-in users
+- [x] Premium "Deep Forest & Gold" UI Overhaul — standardized all 10+ screens
+- [x] Password Standardization — updated all demo accounts to use `login123`
+- [x] High-End Tourist Experience — immersive hero, glassmorphism, catalog-style explore
+- [x] Role validation fix — added `role.trim()` in AuthContext to prevent enum errors
+- [x] TypeScript Migration — Full conversion of mobile app from JS to TSX/TS
+- [x] Custom Branding — Replaced default Expo/RN icons and splash with Yatara Ceylon logo
+  - [x] Generated premium "Deep Forest & Gold" logo
+  - [x] Replaced all assets in assets/ folder
+  - [x] Integrated logo in Loading, Login, Storefront, and Packages screens
+
+- [x] PHASE 1: Account Creation, CRUD & Role-Based Login — full implementation
+  - [x] Backend: Add `role` selection to register endpoint (TOURIST, DRIVER, HOTEL_MANAGER)
+  - [x] Backend: Add `authorize` middleware for role-gating routes
+  - [x] Backend: Admin CRUD endpoint for user management (list, update role/status, create demo, soft-delete, approve, reject)
+  - [x] Backend: Seed script for demo accounts across all roles (`npm run seed`)
+  - [x] Frontend: Role-selector signup screen (Tourist / Driver / Hotel Manager) — LoginScreen.js
+  - [x] Frontend: Smart post-login routing (Tourist → TouristStorefront, Driver/Hotel → ProviderDashboard, Admin → AdminControlPanel)
+  - [x] Frontend: AdminControlPanel.js — full user CRUD + approve/reject/create-demo + KPI row
+  - [x] Frontend: TouristStorefront.js — booking storefront with packages, categories, trust strip
+  - [x] Frontend: ProviderDashboard.js — driver/hotel stats, assignments, pending-approval banner
+  - [x] Frontend: ProfileScreen.js — edit profile + change password
+  - [x] Frontend: AppNavigator.js — role-based tab sets (Tourist / Provider / Admin)
+
 ## In Progress (2026-05-03)
 
 - [x] Configured authentication API routes (`/api/auth/register`, `/api/auth/login`, and `/api/auth/me`) in `yatara-api/src/routes/auth.ts` to connect to MongoDB and utilize JWT and bcrypt for secure login/registration.
@@ -309,22 +335,86 @@ Production Readiness — final QA pass and polish before go-live
 
 ## Last Session
 
-**Date**: 2026-05-03
+**Date**: 2026-05-04
 **What was done**:
-- Configured authentication API routes (`/api/auth/register`, `/api/auth/login`, and `/api/auth/me`) in `yatara-api/src/routes/auth.ts` to connect to MongoDB and utilize JWT and bcrypt for secure login/registration.
-- Cleaned up unused imports in `auth.ts`.
-- Protected the `/me` route with `protect` middleware to ensure only authenticated users can retrieve their profiles.
+- Implemented Phase 1 of Yatara Ceylon: Account Creation, Full CRUD & Role-Based Login
+- **Backend `yatara-api`**:
+  - Updated `src/lib/constants.ts`: Added TOURIST, DRIVER, HOTEL_MANAGER roles; SelfRegisterRoles, DashboardRoles, TouristRoles arrays
+  - Updated `src/middleware/auth.ts`: Added `authorize(...roles)` middleware for role-gating
+  - Rewrote `src/routes/auth.ts`: Role-aware register (TOURIST=ACTIVE, DRIVER/HOTEL_MANAGER=PENDING_APPROVAL), non-blocking lastLogin, change-password endpoint
+  - Rewrote `src/routes/users.ts`: Full CRUD — list (with filter/search/pagination), create (admin), approve, reject, update (owner or admin), soft-delete (admin only)
+  - Created `src/seed.ts`: Idempotent seed for 8 demo accounts across all roles
+  - Updated `package.json`: Added `npm run seed` script
+- **Frontend `yatara-mobile`**:
+  - Updated `src/context/AuthContext.js`: Role helpers (isTourist, isServiceProvider, isAdmin etc.), register passes role, bootChecked flag, updateUserInSession
+  - Rewrote `src/screens/LoginScreen.js`: Role selector cards (Tourist/Driver/Hotel Manager), pending-approval warning, glassmorphism UI
+  - Created `src/screens/TouristStorefront.js`: Booking storefront with categories, packages from API, trust strip, why-us
+  - Created `src/screens/ProviderDashboard.js`: Unified Driver/Hotel dashboard with KPI stats, pending-approval banner, quick actions, recent assignments
+  - Created `src/screens/AdminControlPanel.js`: Master control panel — pending queue, all-users CRUD, approve/reject/delete, create-demo-modal
+  - Created `src/screens/ProfileScreen.js`: Edit profile + change password + role/status display
+  - Rewrote `src/navigation/AppNavigator.js`: Smart role-based routing (Tourist tabs / Provider tabs / Admin tabs)
 
 **What to do next**:
-- Continue configuring other API routes in `yatara-api/src/routes/` to replace mock data with real database operations (e.g., packages, bookings, finance).
-- Ensure the mobile frontend can authenticate against these new routes properly.
+- Phase 2: Bookings & Payments — implement tourist booking flow with package selection, booking creation, and PayHere/Stripe payment integration
+- Phase 3: Admin can assign bookings to verified Drivers/Hotel Managers
+- **Mobile TypeScript Refinement**: Ensure absolute path imports are consistent across all new .tsx files.
 
 **Current state**:
-- Backend `yatara-api` auth routes implemented and ready for integration.
-- `mobile` app expects `/api/auth/login` and `/api/auth/register`.
+- Backend auth, users CRUD, seed script: complete and ready
+- Mobile: all role-specific screens and smart navigation implemented
+- To run: `cd yatara-api && npm run dev` + `cd yatara-mobile && npx expo start`
+- Demo password for all seeded accounts: `login123`
+- Admin login: `admin@yatara.com / login123`
+- Tourist login: `tourist@yatara.com / login123`
 
 **Files changed**:
+- `yatara-api/src/lib/constants.ts`
+- `yatara-api/src/middleware/auth.ts`
 - `yatara-api/src/routes/auth.ts`
+- `yatara-api/src/routes/users.ts`
+- `yatara-api/src/seed.ts` (new)
+- `yatara-api/package.json`
+- `yatara-mobile/src/context/AuthContext.js`
+- `yatara-mobile/src/screens/LoginScreen.js`
+- `yatara-mobile/src/screens/TouristStorefront.js` (new)
+- `yatara-mobile/src/screens/ProviderDashboard.js` (new)
+- `yatara-mobile/src/screens/AdminControlPanel.js` (new)
+- `yatara-mobile/src/screens/ProfileScreen.js` (new)
+- `yatara-mobile/src/navigation/AppNavigator.js`
+
+**Date**: 2026-05-04 (Session 2)
+**What was done**:
+- [2026-05-04] TypeScript Migration Pattern: When migrating screens, use `NativeStackScreenProps` or `CompositeScreenProps` to type the `navigation` and `route` props, ensuring that `navigate()` calls only target valid screen names defined in the Navigator.
+- [2026-05-04] Custom Branding Pattern: When replacing default Expo assets, ensure `app.json` `backgroundColor` matches the logo's background to avoid visible seams during the splash-to-app transition.
+- **Full TypeScript Migration (Mobile)**:
+  - Initialized TypeScript in `yatara-mobile` with `tsconfig.json` and essential types.
+  - Converted the entire mobile frontend codebase from JavaScript to TypeScript (TSX).
+  - Defined strict interfaces for `User`, `Booking`, `Package`, `FinanceItem`, `Vehicle`, and `AuthContextType`.
+  - Migrated core modules: `client.ts`, `AuthContext.tsx`, `AppNavigator.tsx`.
+  - Migrated all screens: `LoginScreen.tsx`, `TouristStorefront.tsx`, `PackagesScreen.tsx`, `ProfileScreen.tsx`, `BookingsScreen.tsx`, `GuestProfileScreen.tsx`, `ProviderDashboard.tsx`, `AdminControlPanel.tsx`, `UsersScreen.tsx`, `FinanceScreen.tsx`, `VehiclesScreen.tsx`.
+  - Migrated root files: `App.tsx`, `index.ts`.
+  - Removed all legacy `.js` files to ensure a clean TypeScript-only environment.
+- **Database Sanitization**:
+  - Implemented Mongoose `pre('save')` hook for User model to ensure roles are always trimmed and capitalized.
+
+**What to do next**:
+- Broad QA of the TypeScript mobile app to ensure navigation and state management remain fluid.
+- Proceed with Phase 2: Payments & Transactions.
+
+**Files changed**:
+- `yatara-mobile/src/api/client.ts`
+- `yatara-mobile/src/context/AuthContext.tsx`
+- `yatara-mobile/src/navigation/AppNavigator.tsx`
+- `yatara-mobile/src/screens/*.tsx`
+- `yatara-mobile/App.tsx`
+- `yatara-mobile/index.ts`
+- `yatara-mobile/tsconfig.json`
+- `yatara-mobile/package.json`
+- `yatara-api/src/models/User.ts`
+
+
+
+**Files changed**:
 - `.agent/TODO.md`
 
 ---
