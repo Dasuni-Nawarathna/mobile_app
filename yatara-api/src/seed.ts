@@ -42,7 +42,7 @@ const demoAccounts = [
   {
     name: 'Emma Tourist',
     email: 'tourist@yatara.com',
-    role: 'TOURIST',
+    role: 'USER',
     status: 'ACTIVE',
     phone: '+44791234567',
   },

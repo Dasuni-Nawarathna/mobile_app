@@ -18,7 +18,7 @@ Used for browsing packages, requesting bespoke journeys, and managing personal b
 
 | Name | Email | Role | Status |
 | :--- | :--- | :--- | :--- |
-| Emma Tourist | `tourist@yatara.com` | `TOURIST` | **Active** |
+| Emma Tourist | `tourist@yatara.com` | `USER` | **Active** |
 | James Walker | `james@example.com` | `TOURIST` | **Active** |
 
 ---
