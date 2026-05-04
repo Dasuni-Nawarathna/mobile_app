@@ -15,7 +15,9 @@ import bookingRoutes from './routes/bookings';
 import financeRoutes from './routes/finance';
 
 // Load environment variables
-dotenv.config({ path: '../.env.local' });
+// In Railway, env vars are injected directly. Locally, load from project root.
+dotenv.config({ path: path.resolve(__dirname, '../../.env.local') });
+dotenv.config(); // fallback to local .env
 
 // Connect to MongoDB
 connectDB();
@@ -25,7 +27,7 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors({ origin: '*', credentials: false }));
 app.use(helmet());
 app.use(morgan('dev'));
 

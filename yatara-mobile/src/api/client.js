@@ -1,11 +1,14 @@
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
 
-// For local dev with Android emulator, use 10.0.2.2 instead of localhost
-// For iOS simulator, localhost works
-// If using Expo Go on a physical device, you need the local IP address of your machine, e.g. 192.168.1.X
-// Using port 5001 to guarantee we hit our REAL database API, not the mocked one!
-const API_URL = 'http://172.20.10.8:5001/api';
+// 🚀 PRODUCTION: Replace with your Railway URL after deployment
+// e.g. 'https://yatara-api-production.up.railway.app/api'
+//
+// 💻 LOCAL DEV OPTIONS:
+//   - iOS Simulator:      'http://localhost:5001/api'
+//   - Android Emulator:   'http://10.0.2.2:5001/api'
+//   - Physical device:    'http://192.168.1.X:5001/api'  (your Mac's LAN IP)
+const API_URL = 'https://YOUR-APP.up.railway.app/api';
 
 const client = axios.create({
   baseURL: API_URL,
