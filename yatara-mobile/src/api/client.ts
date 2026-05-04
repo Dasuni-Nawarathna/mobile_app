@@ -3,9 +3,7 @@ import * as SecureStore from 'expo-secure-store';
 
 // Change this to your local machine IP (e.g., '192.168.1.5') to test against local backend
 const LOCAL_IP = '192.168.1.151'; 
-const API_URL = __DEV__ 
-  ? `http://${LOCAL_IP}:5001/api` 
-  : 'https://mobileapp-production-cb35.up.railway.app/api';
+const API_URL = 'https://mobileapp-production-cb35.up.railway.app/api';
 
 const client = axios.create({
   baseURL: API_URL,

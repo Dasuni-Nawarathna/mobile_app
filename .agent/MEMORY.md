@@ -42,27 +42,15 @@
 - [2026-04-01] Partner edit form still submitted `PUT` to `/api/partners/[id]` while the route only exports `PATCH` → partner edits fail with 405 even though the backend exists → Always verify dashboard form verbs against the real route methods before assuming a module is "unfinished".
 - [2026-04-01] Converting `createPartnerServiceSchema` to a transformed Zod schema broke `.partial()` and stricter `validateBody()` typing across every route importing `updatePartnerServiceSchema` → build/tests failed before any runtime verification could happen → When adding transforms, keep an untransformed base object schema for partial/update variants or widen the validator helper to accept transformed schemas explicitly.
 
+- [2026-05-04] The error "Cannot find module '../encodings'" in `iconv-lite` triggered by `body-parser` (internal to Express 5) can crash the API with a 400 status during JSON body parsing. This often happens in environments where `iconv-lite` dynamic loading fails or when `node_modules` are corrupted/inconsistent across OSs. → Downgrade `express` to stable 4.x or ensure `iconv-lite` version is locked and `node_modules` are clean.
+
 ---
 
 ## Recent Findings
 
-- [2026-04-02] Production smoke testing showed the finance dashboard's "Outstanding Balances" panel is still ranked purely by `remainingBalance DESC`, which hides nearer operational demo bookings like `YC-DEMO-1005` and `YC-DEMO-1006` behind older high-balance records. For operator follow-up panels, prioritize actionable current bookings over raw historical debt size.
-- [2026-04-01] Local DB check confirmed `admin@yataraceylon.me` exists, bcrypt validation succeeds for `Admin@123`, and the account still has `emailVerified: false`. The test-credential failure is in seeded account state, not password hashing or JWT generation.
-- [2026-04-01] `npm run seed` currently ignores `.env.local`; when run from the repo root it attempts localhost Mongo unless the shell already exported `MONGODB_URI`. That makes the README instruction inaccurate until the seed script loads env files itself.
-- [2026-04-01] MapViewport.client.tsx already uses dynamic import with ssr: false in BuildTourShell.client.tsx. CSS imports are correct (leaflet.css, MarkerCluster.css). Loading state shows "Loading map..." with animated spinner on dark bg. Districts and places data load correctly via fetch GeoJSON and curated places JSON. No fixes needed for map rendering.
-- [2026-04-01] `/api/auth/login` succeeds locally for `admin@ceylonescapes.lk` and `Admin@123`. The vulnerable point was the post-auth `lastLogin` write, not credential lookup or JWT issuance.
-- [2026-04-01] The observed local 500 could also be reproduced from a corrupted Next dev bundle, not just auth logic. After a `next build` while dev was running, the login route resolved to a missing vendor chunk inside `.next`.
-- [2026-04-01] Live Vercel behavior on `https://www.yataraceylon.me/api/auth/login`: malformed email returns `400`, missing user returns `401`, but valid admin credentials return `500`. This strongly indicates production reaches the database and only fails in the post-auth success path, matching the pre-patch `lastLogin` save behavior. Domain redirect (`yataraceylon.me` → `www.yataraceylon.me`) is normal and not the cause.
-- [2026-04-01] `TOMS-Completion-Audit-Report.md` is partially stale: several items flagged as missing were already implemented (`/api/users/[id]` PATCH/DELETE, notification PATCH/DELETE, bookings/tickets/invoices/payments auth, finance CSV export, analytics page, tests, custom 404). Re-audit the code before treating the report as source of truth.
-- [2026-04-01] Destination cards/detail pages now normalize malformed stored image URLs before sending them to `next/image`, which prevents broken hero/card imagery when DB content contains duplicated domains.
-- [2026-04-01] Two sensitive partner reads were still exposed after the earlier audit cleanup: `GET /api/booking-partners` had no auth at all and `GET /api/partners/[id]` was publicly readable. Security re-checks must include adjacent routes, not only the exact URLs named in an audit.
-- [2026-04-01] The repo currently has no shared CSRF, email-delivery, or captcha plumbing. Password reset, email verification, lockout, and public-form protection need shared primitives first; patching routes one by one creates drift and inconsistent enforcement.
-- [2026-04-01] After adding CSRF and Turnstile to public/auth flows, the existing Jest suite must be updated for the new request contract (matching CSRF cookie/header pairs and captcha token payloads). Several failures were test expectations, not route regressions.
-- [2026-04-01] `nodemailer` compiles fine at runtime but this repo still needs `@types/nodemailer` for `next build` type-checking → adding the package is simpler than carrying a local ambient declaration.
-- [2026-04-01] Browser smoke-check on `/build-tour` confirmed the map now mounts a real `.leaflet-container` with interactive district paths on desktop instead of hanging on “Loading map…”. The main non-app console noise is third-party chat/CORS and favicon warnings, not planner failures.
-- [2026-05-04] TypeScript Migration Discovery: Converting a large JS codebase to TSX in React Native requires setting up `tsconfig.json` with `baseUrl` and `paths` if absolute imports (e.g., `src/*`) were used. Without this, the compiler fails to resolve local modules despite valid file paths.
-- [2026-05-04] MaterialCommunityIcons Typing: In Expo, the `name` prop for `MaterialCommunityIcons` should be typed as `keyof typeof MaterialCommunityIcons.glyphMap` to get full IDE autocomplete and type safety.
-- [2026-05-04] React Context Typing: Always define a separate `interface` for the Context value (e.g., `AuthContextType`) and the children props (e.g., `AuthProviderProps`) to avoid "implicit any" errors in provider components.
+- [2026-05-04] The login error reported by the user shows Windows paths in the stack trace while the environment is Mac. This confirms the mobile app build or the API server is running on a Windows machine (Dasun's) while being viewed on a Mac.
+- [2026-05-04] The `Cannot find module '../encodings'` error is coming from `iconv-lite` inside `body-parser`. It surfaces as a 400 Bad Request because Express catches it during body parsing.
+
 
 ---
 

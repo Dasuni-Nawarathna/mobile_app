@@ -9,6 +9,7 @@ Production Readiness — final QA pass and polish before go-live
 
 ## In Progress (2026-05-04)
 
+- [x] Fix "Cannot find module '../encodings'" login error (Downgraded Express to 4.x for stability)
 - [x] Guest Mode Implementation — Public "Home", "Explore" and "Account" tabs for non-logged-in users
 - [x] Premium "Deep Forest & Gold" UI Overhaul — standardized all 10+ screens
 - [x] Password Standardization — updated all demo accounts to use `login123`
